@@ -14,6 +14,7 @@ import Warning from "@editorjs/warning";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
+import { FILE } from "../../dashboard/_components/FileList";
 
 const rawDocument = {
   time: 1550476186479,
@@ -36,13 +37,21 @@ const rawDocument = {
   ],
   version: "2.8.1",
 };
-function Editor({ onSaveTrigger, fileId }: any) {
+function Editor({
+  onSaveTrigger,
+  fileId,
+  fileData,
+}: {
+  onSaveTrigger: any;
+  fileId: any;
+  fileData: FILE;
+}) {
   const ref = useRef<EditorJS>();
   const updateDocument = useMutation(api.files.updateDocument);
   const [document, setDocument] = useState(rawDocument);
   useEffect(() => {
-    initEditor();
-  }, []);
+    fileData && initEditor();
+  }, [fileData]);
 
   useEffect(() => {
     console.log("trigeer save", onSaveTrigger);
@@ -79,7 +88,7 @@ function Editor({ onSaveTrigger, fileId }: any) {
       },
 
       holder: "editorjs",
-      data: rawDocument,
+      data: fileData?.document ? JSON.parse(fileData.document) : rawDocument,
     });
     ref.current = editor;
   };

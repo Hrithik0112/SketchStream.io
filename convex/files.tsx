@@ -41,3 +41,13 @@ export const updateDocument = mutation({
     return result;
   },
 });
+
+export const getFileById = query({
+  args: {
+    _id: v.id("files"),
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db.get(args._id);
+    return result;
+  },
+});
