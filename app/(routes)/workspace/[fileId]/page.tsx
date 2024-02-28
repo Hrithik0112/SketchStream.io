@@ -1,5 +1,6 @@
 import React from "react";
 import WorkSpaceHeader from "../_components/WorkSpaceHeader";
+import Editor from "../_components/DocWorkspace";
 
 function WorkSpace() {
   return (
@@ -11,7 +12,9 @@ function WorkSpace() {
       md:grid-cols-2"
       >
         {/* Document  */}
-        <div className=" h-screen">Editor Document</div>
+        <div className=" h-screen">
+          <Editor />
+        </div>
         {/* Whiteboard/canvas  */}
         <div className=" h-screen border-l">Canvas</div>
       </div>
