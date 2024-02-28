@@ -7,6 +7,7 @@ import SideNavTop, { TEAM } from "./SideNavTop";
 import { useConvex, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
+import { FileListContext } from "@/app/_context/FileListContext";
 
 function SideNav() {
   const { user }: any = useKindeBrowserClient();
@@ -14,6 +15,7 @@ function SideNav() {
   const [activeTeam, setActiveTeam] = useState<TEAM | any>();
   const convex = useConvex();
   const [totalFiles, setTotalFiles] = useState<Number>();
+  const { fileList_, setFileList_ } = useContext(FileListContext);
 
   useEffect(() => {
     activeTeam && getFiles();
@@ -44,6 +46,7 @@ function SideNav() {
   const getFiles = async () => {
     const result = await convex.query(api.files.getFiles, { teamId: activeTeam?._id });
     console.log(result);
+    setFileList_(result);
     setTotalFiles(result?.length);
   };
   return (
