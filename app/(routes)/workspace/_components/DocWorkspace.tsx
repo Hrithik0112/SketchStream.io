@@ -11,6 +11,9 @@ import Checklist from "@editorjs/checklist";
 import Paragraph from "@editorjs/paragraph";
 // @ts-ignore
 import Warning from "@editorjs/warning";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 
 const rawDocument = {
   time: 1550476186479,
@@ -33,12 +36,18 @@ const rawDocument = {
   ],
   version: "2.8.1",
 };
-function Editor() {
+function Editor({ onSaveTrigger, fileId }: any) {
   const ref = useRef<EditorJS>();
+  const updateDocument = useMutation(api.files.updateDocument);
   const [document, setDocument] = useState(rawDocument);
   useEffect(() => {
     initEditor();
   }, []);
+
+  useEffect(() => {
+    console.log("trigeer save", onSaveTrigger);
+    onSaveTrigger && onSaveDocument();
+  }, [onSaveTrigger]);
 
   const initEditor = () => {
     const editor = new EditorJS({
@@ -75,6 +84,29 @@ function Editor() {
     ref.current = editor;
   };
 
+  const onSaveDocument = () => {
+    if (ref.current) {
+      ref.current
+        .save()
+        .then((outputData) => {
+          console.log("Article data: ", outputData);
+          updateDocument({
+            _id: fileId,
+            document: JSON.stringify(outputData),
+          }).then(
+            (resp) => {
+              toast("Document Updated!");
+            },
+            (e) => {
+              toast("Server Error!");
+            }
+          );
+        })
+        .catch((error) => {
+          console.log("Saving failed: ", error);
+        });
+    }
+  };
   return (
     <div>
       <div id="editorjs" className="ml-20"></div>

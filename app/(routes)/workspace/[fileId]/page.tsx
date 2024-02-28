@@ -1,11 +1,17 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import WorkSpaceHeader from "../_components/WorkSpaceHeader";
 import Editor from "../_components/DocWorkspace";
 
-function WorkSpace() {
+function WorkSpace({ params }: any) {
+  const [triggerSave, setTriggerSave] = useState(false);
+
+  useEffect(() => {
+    console.log("FILEID", params.fileId);
+  }, []);
   return (
     <div>
-      <WorkSpaceHeader />
+      <WorkSpaceHeader onSave={() => setTriggerSave(!triggerSave)} />
       {/* Workspace Layout  */}
       <div
         className="grid grid-cols-1
@@ -13,7 +19,7 @@ function WorkSpace() {
       >
         {/* Document  */}
         <div className=" h-screen">
-          <Editor />
+          <Editor onSaveTrigger={triggerSave} fileId={params.fileId} />
         </div>
         {/* Whiteboard/canvas  */}
         <div className=" h-screen border-l">Canvas</div>
