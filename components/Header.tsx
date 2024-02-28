@@ -1,7 +1,16 @@
+"use client";
+
+import { LoginLink, RegisterLink, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
 function Header() {
+  const { user } = useKindeBrowserClient();
+
+  useEffect(() => {
+    console.log("---", user);
+  }, [user]);
+
   return (
     <header className="bg-black">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
@@ -47,19 +56,13 @@ function Header() {
 
           <div className="flex items-center gap-4">
             <div className="sm:flex sm:gap-4">
-              <a
-                className="block rounded-md px-5 py-2.5 text-sm font-medium text-white transition "
-                href="#"
-              >
-                Login
-              </a>
+              <p className="block rounded-md px-5 py-2.5 text-sm font-medium text-white transition ">
+                <LoginLink postLoginRedirectURL="/dashboard">Login</LoginLink>
+              </p>
 
-              <a
-                className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-black transition hover:bg-gray-200 sm:block"
-                href="#"
-              >
-                Try eraser &#8594;
-              </a>
+              <p className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-black transition hover:bg-gray-200 sm:block">
+                <RegisterLink>Try eraser &#8594;</RegisterLink>
+              </p>
             </div>
 
             <button className="block rounded bg-white p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden">
