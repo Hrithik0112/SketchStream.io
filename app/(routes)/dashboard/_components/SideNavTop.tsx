@@ -40,6 +40,10 @@ function SideNavTop({ user, setActiveTeamInfo }: any) {
   useEffect(() => {
     activeTeam ? setActiveTeamInfo(activeTeam) : null;
   }, [activeTeam]);
+
+  useEffect(() => {
+    activeTeam ? setActiveTeamInfo(activeTeam) : null;
+  }, [activeTeam]);
   const getTeamList = async () => {
     const result = await convex.query(api.teams.getTeam, { email: user?.email });
     console.log("TeamList", result);

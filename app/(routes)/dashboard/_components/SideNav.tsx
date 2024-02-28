@@ -4,11 +4,36 @@ import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 import SideNavBottom from "./SideNavBottom";
 import SideNavTop, { TEAM } from "./SideNavTop";
+import { useConvex, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 
 function SideNav() {
   const { user }: any = useKindeBrowserClient();
+  const createFile = useMutation(api.files.createFile);
   const [activeTeam, setActiveTeam] = useState<TEAM | any>();
+  const convex = useConvex();
 
+  const onFileCreate = (fileName: string) => {
+    console.log(fileName);
+    createFile({
+      fileName: fileName,
+      teamId: activeTeam?._id,
+      createdBy: user?.email,
+      archive: false,
+      document: "",
+      whiteboard: "",
+    }).then(
+      (resp) => {
+        if (resp) {
+          toast("File created successfully!");
+        }
+      },
+      (e) => {
+        toast("Error while creating file");
+      }
+    );
+  };
   return (
     <div
       className=" h-screen 
@@ -24,7 +49,7 @@ function SideNav() {
       </div>
 
       <div>
-        <SideNavBottom />
+        <SideNavBottom onFileCreate={onFileCreate} />
       </div>
     </div>
   );
