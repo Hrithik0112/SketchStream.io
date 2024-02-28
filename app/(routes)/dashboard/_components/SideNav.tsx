@@ -13,6 +13,11 @@ function SideNav() {
   const createFile = useMutation(api.files.createFile);
   const [activeTeam, setActiveTeam] = useState<TEAM | any>();
   const convex = useConvex();
+  const [totalFiles, setTotalFiles] = useState<Number>();
+
+  useEffect(() => {
+    activeTeam && getFiles();
+  }, [activeTeam]);
 
   const onFileCreate = (fileName: string) => {
     console.log(fileName);
@@ -26,6 +31,7 @@ function SideNav() {
     }).then(
       (resp) => {
         if (resp) {
+          getFiles();
           toast("File created successfully!");
         }
       },
@@ -33,6 +39,12 @@ function SideNav() {
         toast("Error while creating file");
       }
     );
+  };
+
+  const getFiles = async () => {
+    const result = await convex.query(api.files.getFiles, { teamId: activeTeam?._id });
+    console.log(result);
+    setTotalFiles(result?.length);
   };
   return (
     <div
@@ -49,7 +61,7 @@ function SideNav() {
       </div>
 
       <div>
-        <SideNavBottom onFileCreate={onFileCreate} />
+        <SideNavBottom onFileCreate={onFileCreate} totalFiles={totalFiles} />
       </div>
     </div>
   );
