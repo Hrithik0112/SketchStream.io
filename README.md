@@ -11,7 +11,7 @@
 ## Tech Stack used:
 
 - Next.js
-  React.js
+- React.js
 - Tailwind CSS
 - Shadcn UI
 - TypeScript
