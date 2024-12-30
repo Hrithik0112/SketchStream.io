@@ -28,3 +28,5 @@
 - Control Free Plan and Paid Plan
 - More than 50+ Document Features
 - More than 30+ Whiteboard Feature
+  
+This project is tested with BrowserStack.
